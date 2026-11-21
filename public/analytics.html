@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Analytics · Ayaka Sync API</title>
+  <meta name="description" content="Analytics — Ayaka Sync API dashboard">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark light">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+</head>
+<body>
+  <a class="sr-only" href="#page">Skip to content</a>
+  <div class="app-loading" aria-hidden="true"><span class="spinner"></span></div>
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+    <div class="drawer-scrim" aria-hidden="true"></div>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+      <main class="page" id="page" tabindex="-1">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Analytics</h1>
+            <p class="page-sub">Request volume, reliability and latency measured from real traffic. <span class="muted" id="period-label"></span></p>
+          </div>
+          <div class="page-actions">
+            <span class="updated-at"><span class="live-dot" id="live-dot"></span><span id="live-label">Auto-refresh 30s</span> · <span id="updated-at-text">Loading…</span></span>
+            <button class="btn btn-icon" id="a-refresh" aria-label="Refresh" data-tooltip="Refresh now"><span data-icon="refresh"></span></button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:12px 16px">
+            <div class="segmented" id="a-range" role="group" aria-label="Time range">
+              <button type="button" data-range="24h">24h</button>
+              <button type="button" data-range="7d" class="is-active">7d</button>
+              <button type="button" data-range="30d">30d</button>
+              <button type="button" data-range="90d">90d</button>
+              <button type="button" data-range="custom">Custom</button>
+            </div>
+            <div class="toolbar hidden" id="custom-range" style="width:auto">
+              <input class="input input-sm" type="date" id="a-start" aria-label="Start date" style="width:auto">
+              <span class="muted">to</span>
+              <input class="input input-sm" type="date" id="a-end" aria-label="End date" style="width:auto">
+              <button class="btn btn-sm" id="a-apply">Apply</button>
+            </div>
+            <select class="select select-sm" id="a-key" aria-label="Filter by API key" style="width:auto;margin-left:auto;max-width:100%"><option value="">All API keys</option></select>
+          </div>
+        </div>
+
+        <div class="callout callout-error hidden" id="a-error-banner" role="alert"><span data-icon="alertCircle"></span><span class="msg" style="flex:1"></span><button class="btn btn-sm" data-retry>Retry</button></div>
+
+        <section class="stat-grid cols-4-sm" aria-label="Totals">
+          <article class="card stat" id="a-total"><span class="stat-label">Total requests <span class="info" tabindex="0" data-tooltip="All requests in the selected range (and key filter)."><span data-icon="info"></span></span></span><div class="stat-value"></div><div class="stat-foot"></div></article>
+          <article class="card stat" id="a-today"><span class="stat-label">Today</span><div class="stat-value"></div><div class="stat-foot"></div></article>
+          <article class="card stat" id="a-week"><span class="stat-label">This week</span><div class="stat-value"></div><div class="stat-foot"></div></article>
+          <article class="card stat" id="a-month"><span class="stat-label">This month</span><div class="stat-value"></div><div class="stat-foot"></div></article>
+          <article class="card stat" id="a-success"><span class="stat-label">Success rate <span class="info" tabindex="0" data-tooltip="Share of responses with status below 400."><span data-icon="info"></span></span></span><div class="stat-value"></div><div class="stat-foot"></div></article>
+          <article class="card stat" id="a-error"><span class="stat-label">Error rate <span class="info" tabindex="0" data-tooltip="Share of responses with status 400 or above."><span data-icon="info"></span></span></span><div class="stat-value"></div><div class="stat-foot"></div></article>
+          <article class="card stat" id="a-latency"><span class="stat-label">Avg response time</span><div class="stat-value"></div><div class="stat-foot"></div></article>
+          <article class="card stat" id="a-peak"><span class="stat-label">Peak traffic <span class="info" tabindex="0" data-tooltip="Busiest hour (24h) or day (other ranges)."><span data-icon="info"></span></span></span><div class="stat-value"></div><div class="stat-foot"></div></article>
+        </section>
+
+        <section class="card">
+          <div class="card-header"><div><h2 class="card-title">Requests over time</h2><p class="card-sub">Total requests per bucket</p></div></div>
+          <div class="card-body"><div class="chart-box" id="c-requests"><canvas role="img" aria-label="Requests over time"></canvas></div></div>
+        </section>
+
+        <div class="grid-2-even">
+          <section class="card">
+            <div class="card-header"><div><h2 class="card-title">Success vs failed</h2><p class="card-sub">Status &lt; 400 vs ≥ 400</p></div><div class="legend"><span><i style="background:var(--chart-secondary)"></i>Successful</span><span><i style="background:var(--error)"></i>Failed</span></div></div>
+            <div class="card-body"><div class="chart-box sm" id="c-split"><canvas role="img" aria-label="Successful versus failed requests"></canvas></div>
+              <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap" id="status-codes"></div></div>
+          </section>
+          <section class="card">
+            <div class="card-header"><div><h2 class="card-title">Response time trend</h2><p class="card-sub" id="lat-summary"></p></div><div class="legend"><span><i style="background:var(--chart-primary)"></i>Average</span><span><i style="background:var(--chart-grey)"></i>Max</span></div></div>
+            <div class="card-body"><div class="chart-box sm" id="c-latency"><canvas role="img" aria-label="Response time trend"></canvas></div></div>
+          </section>
+        </div>
+
+        <div class="grid-2-even">
+          <section class="card">
+            <div class="card-header"><div><h2 class="card-title">Requests by endpoint</h2><p class="card-sub">Top 8 in this period</p></div></div>
+            <div class="card-body" id="by-endpoint"><div class="skeleton sk-line"></div></div>
+          </section>
+          <section class="card">
+            <div class="card-header"><div><h2 class="card-title">Requests by API key</h2><p class="card-sub">Top 8 in this period</p></div></div>
+            <div class="card-body" id="by-key"><div class="skeleton sk-line"></div></div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="assets/js/analytics.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+[project]
+name = "ayaka-sync-api"
+version = "1.0.0"
+description = "Ayaka Sync API — REST API key management platform (FastAPI + PostgreSQL/Neon)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115",
+  "pydantic>=2.9",
+  "sqlalchemy>=2.0.36",
+  "psycopg[binary]>=3.2",
+  "argon2-cffi>=23.1",
+  "pyjwt>=2.9",
+  "email-validator>=2.2",
+  "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["uvicorn[standard]>=0.30", "pytest>=8.3", "httpx>=0.27"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

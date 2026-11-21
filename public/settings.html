@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Settings · Ayaka Sync API</title>
+  <meta name="description" content="Settings — Ayaka Sync API dashboard">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark light">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <a class="sr-only" href="#page">Skip to content</a>
+  <div class="app-loading" aria-hidden="true"><span class="spinner"></span></div>
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+    <div class="drawer-scrim" aria-hidden="true"></div>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+      <main class="page" id="page" tabindex="-1">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-sub">Account, security and default behaviour for new API keys. Changes are saved to your account and applied everywhere.</p>
+          </div>
+        </div>
+
+        <div class="settings-layout">
+          <nav class="settings-nav" aria-label="Settings sections">
+            <a href="#general" class="is-active"><span data-icon="user"></span>General</a>
+            <a href="#appearance"><span data-icon="sun"></span>Appearance</a>
+            <a href="#security"><span data-icon="shield"></span>Security</a>
+            <a href="#api"><span data-icon="key"></span>API Preferences</a>
+            <a href="#notifications"><span data-icon="bell"></span>Notifications</a>
+            <a href="#danger"><span data-icon="alert"></span>Danger Zone</a>
+          </nav>
+
+          <div style="display:flex;flex-direction:column;gap:var(--s-6);min-width:0">
+            <section class="card settings-section" id="general">
+              <div class="card-header"><div><h2 class="card-title">General</h2><p class="card-sub">Profile and regional preferences</p></div></div>
+              <form id="general-form" novalidate>
+                <div class="card-body">
+                  <div class="field-row">
+                    <div class="field"><label class="label" for="g-username">Username</label><input class="input" id="g-username" name="username" autocomplete="username" maxlength="32"><div class="field-error" data-error-for="username"></div></div>
+                    <div class="field"><label class="label" for="g-display">Display name <span class="optional">Optional</span></label><input class="input" id="g-display" name="display_name" maxlength="80"><div class="field-error" data-error-for="display_name"></div></div>
+                  </div>
+                  <div class="field"><label class="label" for="g-email">Email</label><input class="input" id="g-email" name="email" type="email" autocomplete="email"><div class="field-error" data-error-for="email"></div></div>
+                  <div class="field hidden" id="email-pw"><label class="label" for="g-pw">Current password</label><input class="input" id="g-pw" name="current_password" type="password" autocomplete="current-password"><div class="hint">Required to change your email address.</div><div class="field-error" data-error-for="current_password"></div></div>
+                  <div class="field-row">
+                    <div class="field"><label class="label" for="g-tz">Timezone <button type="button" class="btn btn-ghost btn-sm" id="detect-tz" style="height:22px">Detect</button></label><select class="select" id="g-tz" name="timezone"></select><div class="hint">Used for analytics buckets and all timestamps.</div><div class="field-error" data-error-for="timezone"></div></div>
+                    <div class="field"><label class="label" for="g-df">Date format</label><select class="select" id="g-df" name="date_format"><option value="YYYY-MM-DD">YYYY-MM-DD</option><option value="DD/MM/YYYY">DD/MM/YYYY</option><option value="MM/DD/YYYY">MM/DD/YYYY</option><option value="DD MMM YYYY">DD MMM YYYY</option></select><div class="hint" id="date-preview"></div></div>
+                  </div>
+                </div>
+                <div class="card-footer"><a class="muted" style="font-size:var(--text-xs)" href="profile.html">Edit bio on your profile →</a><button class="btn btn-primary" type="submit">Save changes</button></div>
+              </form>
+            </section>
+
+            <section class="card settings-section" id="appearance">
+              <div class="card-header"><div><h2 class="card-title">Appearance</h2><p class="card-sub">Theme and motion. Saved instantly on this browser.</p></div></div>
+              <div class="card-body">
+                <div class="theme-options" role="group" aria-label="Theme">
+                  <button type="button" class="theme-option" data-theme-option="dark" aria-pressed="false"><span class="theme-preview pv-dark" aria-hidden="true"><i class="pv-side"></i><span class="pv-main"><b></b><b></b><b></b></span></span><span class="t"><span data-icon="moon"></span>Dark</span></button>
+                  <button type="button" class="theme-option" data-theme-option="light" aria-pressed="false"><span class="theme-preview pv-light" aria-hidden="true"><i class="pv-side"></i><span class="pv-main"><b></b><b></b><b></b></span></span><span class="t"><span data-icon="sun"></span>Light</span></button>
+                  <button type="button" class="theme-option" data-theme-option="system" aria-pressed="false"><span class="theme-preview pv-system" aria-hidden="true"><i class="pv-side"></i><span class="pv-main"><b></b><b></b><b></b></span></span><span class="t"><span data-icon="monitor"></span>System</span></button>
+                </div>
+                <div class="hint">System follows your operating system setting and switches automatically.</div>
+                <label class="setting-row" style="margin-top:var(--s-5);padding-top:var(--s-5);border-top:1px solid var(--divider)"><div><div class="t">Scroll animations</div><div class="d">Animate sections and cards as they enter the screen, when scrolling down and up. Turn off to show content instantly. Saved on this browser.</div><div class="d hidden" data-motion-system-note style="color:var(--warning);margin-top:4px">Your system has “reduce motion” enabled, so animations stay off regardless of this switch.</div></div><span class="switch"><input type="checkbox" id="pref-scroll-anim" data-motion-toggle checked aria-label="Scroll animations"><span></span></span></label>
+              </div>
+            </section>
+
+            <section class="card settings-section" id="security">
+              <div class="card-header"><div><h2 class="card-title">Security</h2><p class="card-sub">Password, sessions and sign-in protection</p></div></div>
+              <form id="password-form" novalidate>
+                <div class="card-body">
+                  <h3 style="font-size:var(--text-sm)">Change password</h3>
+                  <div class="field"><label class="label" for="p-cur">Current password</label><input class="input" id="p-cur" name="current_password" type="password" autocomplete="current-password"><div class="field-error" data-error-for="current_password"></div></div>
+                  <div class="field-row">
+                    <div class="field"><label class="label" for="p-new">New password</label><input class="input" id="p-new" name="new_password" type="password" autocomplete="new-password"><div class="strength" id="pw-strength" data-score="0"><i></i><i></i><i></i><i></i></div><div class="hint" id="pw-strength-label">At least 8 characters mixing 2+ of: lowercase, uppercase, digits, symbols.</div><div class="field-error" data-error-for="new_password"></div></div>
+                    <div class="field"><label class="label" for="p-confirm">Confirm new password</label><input class="input" id="p-confirm" name="confirm_password" type="password" autocomplete="new-password"><div class="field-error" data-error-for="confirm_password"></div></div>
+                  </div>
+                  <label class="checkbox"><input type="checkbox" name="logout_other_sessions" checked> Sign out of all other sessions</label>
+                </div>
+                <div class="card-footer"><span class="hint">Passwords are hashed with Argon2id.</span><button class="btn btn-primary" type="submit">Update password</button></div>
+              </form>
+              <div class="card-body" style="border-top:1px solid var(--border)">
+                <div class="setting-row" style="padding:0;border:0"><div><div class="t">Active sessions</div><div class="d">Devices currently signed in to your account.</div></div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-sm" id="logout-others">Sign out other sessions</button><button class="btn btn-sm btn-danger" id="logout-all">Sign out everywhere</button></div></div>
+                <div id="sessions"></div>
+              </div>
+              <div class="card-body" style="border-top:1px solid var(--border)">
+                <div class="setting-row" style="padding:0;border:0"><div><div class="t">Sign-in protection</div><div class="d">After 10 failed attempts for the same account (or 30 from one network), sign-in is blocked for 15 minutes. Failed attempts are recorded in your activity log and trigger a security notification.</div></div>
+                <a class="btn btn-sm" href="activity.html">View activity</a></div>
+                <div class="setting-row"><div><div class="t">Session cookies</div><div class="d">Sessions use HttpOnly, SameSite cookies (Secure in production) with CSRF protection. Tokens are never stored in localStorage.</div></div><span class="badge badge-success badge-dot">Enabled</span></div>
+              </div>
+            </section>
+
+            <section class="card settings-section" id="api">
+              <div class="card-header"><div><h2 class="card-title">API Preferences</h2><p class="card-sub">Defaults applied when you create a new API key</p></div></div>
+              <form id="api-form" novalidate>
+                <div class="card-body">
+                  <div class="field-row">
+                    <div class="field"><label class="label" for="a-env">Default environment</label><select class="select" id="a-env" name="default_environment"><option value="development">Development (ayk_test_)</option><option value="production">Production (ayk_live_)</option></select></div>
+                    <div class="field"><label class="label" for="a-rl">Default rate limit <span class="optional">requests / minute</span></label><input class="input" id="a-rl" name="default_rate_limit" type="number" min="1" max="10000" step="1"><div class="field-error" data-error-for="default_rate_limit"></div></div>
+                  </div>
+                  <div class="field"><label class="label" for="a-exp">Default expiration</label><select class="select" id="a-exp" name="default_key_expiration_days"><option value="0">Never expires</option><option value="7">7 days</option><option value="30">30 days</option><option value="90">90 days</option><option value="180">180 days</option><option value="365">1 year</option></select><div class="hint">Shorter lifetimes reduce the impact of a leaked key.</div></div>
+                </div>
+                <div class="card-footer"><span class="hint">Existing keys are not changed.</span><button class="btn btn-primary" type="submit">Save preferences</button></div>
+              </form>
+            </section>
+
+            <section class="card settings-section" id="notifications">
+              <div class="card-header"><div><h2 class="card-title">Notifications</h2><p class="card-sub">In-app alerts shown in the bell menu. Saved instantly.</p></div></div>
+              <div class="card-body">
+                <label class="setting-row"><div><div class="t">API errors</div><div class="d">Alert when requests return 5xx errors or hit the rate limit in the last 24 hours.</div></div><span class="switch"><input type="checkbox" name="notify_api_errors"><span></span></span></label>
+                <label class="setting-row"><div><div class="t">Key expiration</div><div class="d">Alert 7 days before an API key expires, and when it has expired.</div></div><span class="switch"><input type="checkbox" name="notify_key_expiration"><span></span></span></label>
+                <label class="setting-row"><div><div class="t">Security alerts</div><div class="d">Alert on failed sign-in attempts and incorrect password confirmations.</div></div><span class="switch"><input type="checkbox" name="notify_security"><span></span></span></label>
+                <div class="callout"><span data-icon="info"></span><div>Email delivery is not configured in this deployment, so notifications are shown in-app only.</div></div>
+              </div>
+            </section>
+
+            <section class="card settings-section danger-card" id="danger">
+              <div class="card-header"><div><h2 class="card-title" style="color:var(--error)">Danger Zone</h2><p class="card-sub">Irreversible actions</p></div></div>
+              <div class="card-body">
+                <div class="setting-row"><div><div class="t">Delete an API key</div><div class="d">Permanently remove a key. Applications using it will fail immediately.</div></div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;max-width:100%"><select class="select select-sm" id="danger-key" style="width:260px;max-width:100%" aria-label="API key to delete"><option>Loading…</option></select><button class="btn btn-sm btn-danger" id="danger-key-btn" disabled>Delete key</button></div></div>
+                <div class="setting-row"><div><div class="t">Delete account</div><div class="d">Deletes your account, all API keys, analytics, activity logs and records. Requires your password.</div></div><button class="btn btn-sm btn-danger-solid" id="delete-account">Delete account</button></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="assets/js/settings.js"></script>
+</body>
+</html>

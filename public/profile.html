@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Profile · Ayaka Sync API</title>
+  <meta name="description" content="Profile — Ayaka Sync API dashboard">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark light">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <a class="sr-only" href="#page">Skip to content</a>
+  <div class="app-loading" aria-hidden="true"><span class="spinner"></span></div>
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+    <div class="drawer-scrim" aria-hidden="true"></div>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+      <main class="page" id="page" tabindex="-1">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Profile</h1>
+            <p class="page-sub">How you appear across Ayaka Sync API.</p>
+          </div>
+          <div class="page-actions"><a class="btn" href="settings.html"><span data-icon="settings"></span>Account settings</a></div>
+        </div>
+        <div id="profile-error"></div>
+        <div class="grid-2">
+          <section class="card">
+            <div class="card-body" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+              <span class="avatar avatar-lg" id="p-avatar">··</span>
+              <div style="min-width:0;flex:1">
+                <h2 style="font-size:var(--text-xl)" id="p-name"><span class="skeleton sk-line" style="display:block;width:160px"></span></h2>
+                <p class="muted" style="font-size:var(--text-sm);margin-top:4px;overflow-wrap:anywhere" id="p-handle"></p>
+              </div>
+            </div>
+            <div class="card-body" style="border-top:1px solid var(--border)"><p id="p-bio" class="text-2" style="white-space:pre-line"></p></div>
+            <div class="live-strip" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+              <div><div class="k">API keys</div><div class="v" id="p-keys">—</div></div>
+              <div><div class="k">Total requests</div><div class="v" id="p-reqs">—</div></div>
+              <div><div class="k">Member since</div><div class="v" id="p-since">—</div></div>
+            </div>
+          </section>
+          <section class="card">
+            <div class="card-header"><h2 class="card-title">Account details</h2></div>
+            <div class="card-body"><dl class="dl" style="grid-template-columns:100px minmax(0,1fr)"><dt>User ID</dt><dd class="mono" style="font-size:12px" id="p-id">—</dd><dt>Timezone</dt><dd id="p-tz">—</dd><dt>Security</dt><dd><a href="settings.html#security" style="text-decoration:underline">Password &amp; sessions</a></dd></dl></div>
+          </section>
+        </div>
+        <section class="card">
+          <div class="card-header"><div><h2 class="card-title">Edit profile</h2><p class="card-sub">Username and email are managed in Settings → General.</p></div></div>
+          <form id="profile-form" novalidate>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:var(--s-4)">
+              <div class="field"><label class="label" for="pf-name">Display name</label><input class="input" id="pf-name" name="display_name" maxlength="80" placeholder="Your name"><div class="field-error" data-error-for="display_name"></div></div>
+              <div class="field"><label class="label" for="pf-bio">Bio <span class="optional" id="bio-count">0/300</span></label><textarea class="textarea" id="pf-bio" name="bio" maxlength="300" rows="3" placeholder="A short description"></textarea><div class="field-error" data-error-for="bio"></div></div>
+            </div>
+            <div class="card-footer"><span></span><button class="btn btn-primary" type="submit">Save profile</button></div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="assets/js/profile.js"></script>
+</body>
+</html>

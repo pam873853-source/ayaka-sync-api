@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Privacy Policy · Ayaka Sync API</title>
+  <meta name="description" content="How Ayaka Sync API collects, stores and protects your data.">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark light">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <header class="site-nav" id="site-nav">
+    <div class="container">
+      <a class="logo" href="index.html" aria-label="Ayaka Sync API home"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 12 4l8 11"/><path d="M8 20h8"/><path d="M8.5 15h7"/></svg></span><span class="logo-text"><strong>AYAKA</strong><span>SYNC API</span></span></a>
+      <nav class="site-links" aria-label="Primary"><a href="index.html">Home</a><a href="index.html#features">Features</a><a href="docs.html">Documentation</a><a href="status.html">Status</a></nav>
+      <div class="site-cta" data-auth-cta>
+        <a class="btn btn-ghost btn-sm" href="login.html" data-guest>Sign In</a>
+        <a class="btn btn-primary btn-sm" href="register.html" data-guest>Get Started</a>
+        <a class="btn btn-primary btn-sm hidden" href="dashboard.html" data-member>Open Dashboard</a>
+      </div>
+      <button class="btn btn-ghost btn-icon theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme"><span data-icon="moon" class="icon-moon"></span><span data-icon="sun" class="icon-sun"></span></button>
+      <button class="btn btn-ghost btn-icon site-menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span data-icon="menu"></span></button>
+    </div>
+    <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
+      <a href="index.html">Home</a><a href="index.html#features">Features</a><a href="docs.html">Documentation</a><a href="status.html">Status</a>
+      <a class="btn" href="login.html" data-guest>Sign In</a>
+      <a class="btn btn-primary" href="register.html" data-guest>Get Started</a>
+      <a class="btn btn-primary hidden" href="dashboard.html" data-member>Open Dashboard</a>
+    </nav>
+  </header>
+  <main class="container">
+    <article class="legal">
+      <span class="section-kicker">Legal</span>
+      <h1 style="margin-top:10px">Privacy Policy</h1>
+      <p class="hint">This policy describes the data handled by this Ayaka Sync API deployment. Operators who self-host should review and adapt it for their jurisdiction.</p>
+      <h2>Data we collect</h2>
+      <ul>
+        <li><strong>Account data</strong> — username, email, display name and preferences you provide.</li>
+        <li><strong>Credentials</strong> — passwords are stored only as Argon2id hashes; API keys only as HMAC-SHA256 hashes plus a short display prefix.</li>
+        <li><strong>Usage data</strong> — for each API request: endpoint, method, status code, response time, key ID, IP address, user agent and request ID.</li>
+        <li><strong>Security events</strong> — sign-ins, failed sign-ins, key changes and settings changes in an append-only activity log.</li>
+      </ul>
+      <h2>What we never store</h2>
+      <ul><li>Full API keys after they are shown once, plaintext passwords, Authorization headers or request bodies.</li></ul>
+      <h2>How data is used</h2>
+      <p>Data is used only to authenticate you, enforce rate limits and permissions, show analytics and activity in your dashboard, and protect the service from abuse. No data is sold or shared with advertisers.</p>
+      <h2>Cookies</h2>
+      <p>Only essential cookies are set: HttpOnly session cookies for authentication and a CSRF token cookie. No analytics or tracking cookies are used.</p>
+      <h2>Retention &amp; deletion</h2>
+      <p>You can delete individual API keys at any time, and delete your entire account from Settings → Danger Zone, which removes your keys, usage logs, sessions and activity.</p>
+      <h2>Infrastructure</h2>
+      <p>Data is stored in PostgreSQL (Neon) and the application runs on Vercel, with TLS in transit.</p>
+      <h2>Contact</h2>
+      <p>Questions about this policy should be sent to the operator of this deployment. See <a href="docs.html#support" style="text-decoration:underline">Help &amp; support</a>.</p>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><a class="logo" href="index.html" aria-label="Ayaka Sync API home"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 12 4l8 11"/><path d="M8 20h8"/><path d="M8.5 15h7"/></svg></span><span class="logo-text"><strong>AYAKA</strong><span>SYNC API</span></span></a><p class="about">Secure, manage and monitor your API keys from one unified platform.</p></div>
+        <div><h4>Product</h4><ul><li><a href="index.html#features">Features</a></li><li><a href="docs.html">Documentation</a></li><li><a href="status.html">API Status</a></li></ul></div>
+        <div><h4>Developers</h4><ul><li><a href="docs.html#endpoints">Endpoint reference</a></li><li><a href="api/docs">OpenAPI reference</a></li><li><a href="docs.html#errors">Error codes</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="docs.html#support">Contact</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-year>2026</span> Ayaka Sync API. All rights reserved.</span><span>Built with FastAPI · PostgreSQL</span></div>
+    </div>
+  </footer>
+  <script type="module" src="assets/js/site.js"></script>
+</body>
+</html>

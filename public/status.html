@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>API Status · Ayaka Sync API</title>
+  <meta name="description" content="Live health of the Ayaka Sync API service, database and usage logging.">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark light">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <header class="site-nav" id="site-nav">
+    <div class="container">
+      <a class="logo" href="index.html" aria-label="Ayaka Sync API home"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 12 4l8 11"/><path d="M8 20h8"/><path d="M8.5 15h7"/></svg></span><span class="logo-text"><strong>AYAKA</strong><span>SYNC API</span></span></a>
+      <nav class="site-links" aria-label="Primary"><a href="index.html">Home</a><a href="index.html#features">Features</a><a href="docs.html">Documentation</a><a href="status.html" class="is-active" aria-current="page">Status</a></nav>
+      <div class="site-cta" data-auth-cta>
+        <a class="btn btn-ghost btn-sm" href="login.html" data-guest>Sign In</a>
+        <a class="btn btn-primary btn-sm" href="register.html" data-guest>Get Started</a>
+        <a class="btn btn-primary btn-sm hidden" href="dashboard.html" data-member>Open Dashboard</a>
+      </div>
+      <button class="btn btn-ghost btn-icon theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme"><span data-icon="moon" class="icon-moon"></span><span data-icon="sun" class="icon-sun"></span></button>
+      <button class="btn btn-ghost btn-icon site-menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span data-icon="menu"></span></button>
+    </div>
+    <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
+      <a href="index.html">Home</a><a href="index.html#features">Features</a><a href="docs.html">Documentation</a><a href="status.html" class="is-active" aria-current="page">Status</a>
+      <a class="btn" href="login.html" data-guest>Sign In</a>
+      <a class="btn btn-primary" href="register.html" data-guest>Get Started</a>
+      <a class="btn btn-primary hidden" href="dashboard.html" data-member>Open Dashboard</a>
+    </nav>
+  </header>
+  <main class="container">
+    <section class="status-hero">
+      <span class="section-kicker">System status</span>
+      <h1 style="margin:10px 0 18px;font-size:var(--text-2xl);letter-spacing:-0.03em">Ayaka Sync API status</h1>
+      <div class="status-pill" id="overall"><span class="status-dot"></span><span>Checking services…</span></div>
+      <p class="hint" style="margin-top:14px">Checked live from this browser against <code data-origin></code>. <span id="last-updated"></span></p>
+    </section>
+    <div class="card" style="margin-bottom:24px">
+      <div class="status-list" id="status-list">
+        <div class="status-row" data-svc="api"><div><strong>API</strong><div class="hint">GET /api/v1/health</div></div><span class="badge">Checking…</span></div>
+        <div class="status-row" data-svc="db"><div><strong>Database</strong><div class="hint">GET /api/v1/health/database</div></div><span class="badge">Checking…</span></div>
+        <div class="status-row" data-svc="usage"><div><strong>Usage logging</strong><div class="hint">Request tracking pipeline</div></div><span class="badge">Checking…</span></div>
+        <div class="status-row" data-svc="config"><div><strong>Configuration</strong><div class="hint">Required environment variables</div></div><span class="badge">Checking…</span></div>
+      </div>
+    </div>
+    <div class="callout hidden" id="config-help" style="margin-bottom:24px"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:96px">
+      <button class="btn btn-sm" id="refresh"><span data-icon="refresh"></span>Check now</button>
+      <a class="btn btn-ghost btn-sm" href="docs.html#errors">Error reference</a>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><a class="logo" href="index.html" aria-label="Ayaka Sync API home"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 12 4l8 11"/><path d="M8 20h8"/><path d="M8.5 15h7"/></svg></span><span class="logo-text"><strong>AYAKA</strong><span>SYNC API</span></span></a><p class="about">Secure, manage and monitor your API keys from one unified platform.</p></div>
+        <div><h4>Product</h4><ul><li><a href="index.html#features">Features</a></li><li><a href="docs.html">Documentation</a></li><li><a href="status.html">API Status</a></li></ul></div>
+        <div><h4>Developers</h4><ul><li><a href="docs.html#endpoints">Endpoint reference</a></li><li><a href="api/docs">OpenAPI reference</a></li><li><a href="docs.html#errors">Error codes</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="docs.html#support">Contact</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-year>2026</span> Ayaka Sync API. All rights reserved.</span><span>Built with FastAPI · PostgreSQL</span></div>
+    </div>
+  </footer>
+  <script type="module" src="assets/js/status.js"></script>
+</body>
+</html>

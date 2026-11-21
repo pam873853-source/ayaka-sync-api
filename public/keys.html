@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>API Keys · Ayaka Sync API</title>
+  <meta name="description" content="API Keys — Ayaka Sync API dashboard">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark light">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <a class="sr-only" href="#page">Skip to content</a>
+  <div class="app-loading" aria-hidden="true"><span class="spinner"></span></div>
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+    <div class="drawer-scrim" aria-hidden="true"></div>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+      <main class="page" id="page" tabindex="-1">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">API Keys</h1>
+            <p class="page-sub">Create, rotate and revoke the keys your applications use. Full keys are shown once and stored only as a hash.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" id="new-key"><span data-icon="plus"></span>Create API key</button>
+          </div>
+        </div>
+
+        <section class="card" id="keys-card">
+          <div class="card-header">
+            <div class="toolbar">
+              <label class="input-icon"><span class="sr-only">Search keys</span><span data-icon="search"></span><input class="input input-sm" id="key-search" type="search" placeholder="Search by name or prefix" autocomplete="off"></label>
+              <select class="select select-sm" id="key-env" aria-label="Environment"><option value="">All environments</option><option value="development">Development</option><option value="production">Production</option></select>
+              <select class="select select-sm" id="key-status" aria-label="Status"><option value="">All statuses</option><option value="active">Active</option><option value="disabled">Disabled</option><option value="expired">Expired</option><option value="revoked">Revoked</option></select>
+              <select class="select select-sm" id="key-sort" aria-label="Sort"><option value="created_desc">Newest first</option><option value="created_asc">Oldest first</option><option value="name">Name A–Z</option><option value="last_used">Recently used</option></select>
+            </div>
+            <div class="legend"><span>Development <strong class="tabular" id="count-dev">—</strong></span><span>Production <strong class="tabular" id="count-prod">—</strong></span></div>
+          </div>
+          <div class="table-wrap">
+            <table class="table stack">
+              <thead><tr><th>Name</th><th>Key prefix</th><th>Environment</th><th>Permissions</th><th>Created at</th><th>Last used</th><th>Status</th><th class="actions"><span class="sr-only">Actions</span></th></tr></thead>
+              <tbody id="keys-body"></tbody>
+            </table>
+          </div>
+          <div class="card-footer" id="keys-pagination"></div>
+        </section>
+
+        <div class="callout"><span data-icon="shield"></span><div>Send keys in the <code>Authorization: Bearer &lt;key&gt;</code> header (or <code>X-API-Key</code>). Never embed production keys in browser or mobile code. See <a href="docs.html#authentication" style="text-decoration:underline">Authentication docs</a>.</div></div>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="assets/js/keys.js"></script>
+</body>
+</html>

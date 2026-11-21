@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ayaka Sync API — Your API Infrastructure. Fully in Sync.</title>
+  <meta name="description" content="Secure, manage, and monitor your API keys from one unified platform. Built for developers who need reliability, control, and simplicity.">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark light">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <header class="site-nav" id="site-nav">
+    <div class="container">
+      <a class="logo" href="index.html" aria-label="Ayaka Sync API home"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 12 4l8 11"/><path d="M8 20h8"/><path d="M8.5 15h7"/></svg></span><span class="logo-text"><strong>AYAKA</strong><span>SYNC API</span></span></a>
+      <nav class="site-links" aria-label="Primary"><a href="index.html" class="is-active" aria-current="page">Home</a><a href="index.html#features">Features</a><a href="docs.html">Documentation</a><a href="status.html">Status</a></nav>
+      <div class="site-cta" data-auth-cta>
+        <a class="btn btn-ghost btn-sm" href="login.html" data-guest>Sign In</a>
+        <a class="btn btn-primary btn-sm" href="register.html" data-guest>Get Started</a>
+        <a class="btn btn-primary btn-sm hidden" href="dashboard.html" data-member>Open Dashboard</a>
+      </div>
+      <button class="btn btn-ghost btn-icon theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme"><span data-icon="moon" class="icon-moon"></span><span data-icon="sun" class="icon-sun"></span></button>
+      <button class="btn btn-ghost btn-icon site-menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span data-icon="menu"></span></button>
+    </div>
+    <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
+      <a href="index.html" class="is-active" aria-current="page">Home</a><a href="index.html#features">Features</a><a href="docs.html">Documentation</a><a href="status.html">Status</a>
+      <a class="btn" href="login.html" data-guest>Sign In</a>
+      <a class="btn btn-primary" href="register.html" data-guest>Get Started</a>
+      <a class="btn btn-primary hidden" href="dashboard.html" data-member>Open Dashboard</a>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <div>
+          <span class="eyebrow"><b>v1</b>REST API key management platform</span>
+          <h1>Your API Infrastructure.<br><span>Fully in Sync.</span></h1>
+          <p class="hero-sub">Secure, manage, and monitor your API keys from one unified platform. Built for developers who need reliability, control, and simplicity.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="register.html" data-guest>Get Started <span data-icon="arrowRight"></span></a>
+            <a class="btn btn-primary btn-lg hidden" href="dashboard.html" data-member>Open Dashboard <span data-icon="arrowRight"></span></a>
+            <a class="btn btn-lg" href="docs.html">Explore Documentation</a>
+          </div>
+          <div class="hero-meta">
+            <span><span data-icon="lock"></span>Hashed keys, never stored in plain text</span>
+            <span><span data-icon="gauge"></span>Per-key rate limits</span>
+          </div>
+        </div>
+        <div class="terminal" aria-label="Example API request">
+          <div class="terminal-head"><i></i><i></i><i></i><span>~/my-app — curl</span></div>
+<pre><span class="p">$</span> <span class="w">curl</span> <span data-origin>https://your-domain</span>/api/v1/example \
+    -H <span class="w">"Authorization: Bearer ayk_live_••••••••"</span>
+
+<span class="dim">HTTP/1.1</span> <span class="ok">200 OK</span>
+<span class="dim">X-RateLimit-Limit:</span> 60
+<span class="dim">X-RateLimit-Remaining:</span> 59
+<span class="dim">X-Request-ID:</span> req_8f3a2c91d0b4
+
+{
+  <span class="w">"success"</span>: <span class="ok">true</span>,
+  <span class="w">"message"</span>: "API key verified",
+  <span class="w">"data"</span>: {
+    <span class="w">"key"</span>: { "environment": "production",
+             "permissions": ["read"] }
+  },
+  <span class="w">"meta"</span>: { "timestamp": "2026-01-01T00:00:00Z" }
+}
+<span class="p">$</span> <span class="cursor"></span></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker">Features</span>
+          <h2>Everything you need to run API access safely.</h2>
+          <p>One place to issue keys, enforce limits and understand how your API is used — without building it yourself.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature"><span class="f-icon"><span data-icon="key"></span></span><h3>Secure API Key Management</h3><p>Keys are generated with a CSPRNG, shown once, and stored only as an HMAC-SHA256 hash.</p></article>
+          <article class="feature"><span class="f-icon"><span data-icon="activity"></span></span><h3>Real-time Usage Monitoring</h3><p>Watch requests arrive minute by minute with automatic, visibility-aware refresh.</p></article>
+          <article class="feature"><span class="f-icon"><span data-icon="chart"></span></span><h3>Request Analytics</h3><p>Volume, success rate, latency and peak traffic — broken down by endpoint and key.</p></article>
+          <article class="feature"><span class="f-icon"><span data-icon="shield"></span></span><h3>API Access Control</h3><p>Granular read, write, delete, analytics and profile permissions plus endpoint allow-lists.</p></article>
+          <article class="feature"><span class="f-icon"><span data-icon="gauge"></span></span><h3>Rate Limiting</h3><p>Per-key limits backed by PostgreSQL with standard <code>X-RateLimit-*</code> and <code>Retry-After</code> headers.</p></article>
+          <article class="feature"><span class="f-icon"><span data-icon="book"></span></span><h3>Developer-friendly Documentation</h3><p>cURL, Python and JavaScript examples, an OpenAPI reference and a live endpoint tester.</p></article>
+          <article class="feature"><span class="f-icon"><span data-icon="lock"></span></span><h3>Secure Authentication</h3><p>Argon2id passwords, HttpOnly cookie sessions, CSRF protection and brute-force lockout.</p></article>
+          <article class="feature"><span class="f-icon"><span data-icon="server"></span></span><h3>Reliable Infrastructure</h3><p>Serverless FastAPI on Vercel with Neon PostgreSQL, health checks and resilient usage logging.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-kicker">How it works</span>
+          <h2>From sign-up to first request in minutes.</h2>
+        </div>
+        <div class="steps">
+          <article class="step"><h3>Create your account</h3><p>Register with a username, email and a strong password.</p></article>
+          <article class="step"><h3>Generate an API key</h3><p>Choose environment, permissions, rate limit and expiration.</p></article>
+          <article class="step"><h3>Connect your application</h3><p>Send the key in the <code>Authorization</code> header from your backend.</p></article>
+          <article class="step"><h3>Monitor API requests</h3><p>See every call, status code and response time in your dashboard.</p></article>
+          <article class="step"><h3>Manage usage and security</h3><p>Rotate, disable or revoke keys and review the audit log at any time.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="container">
+        <div class="cta-inner">
+          <div><h2>Ship secure API access today.</h2><p>Create an account and issue your first key in under a minute.</p></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-primary btn-lg" href="register.html" data-guest>Get Started</a>
+            <a class="btn btn-primary btn-lg hidden" href="dashboard.html" data-member>Open Dashboard</a>
+            <a class="btn btn-lg" href="docs.html">Read the docs</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><a class="logo" href="index.html" aria-label="Ayaka Sync API home"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 12 4l8 11"/><path d="M8 20h8"/><path d="M8.5 15h7"/></svg></span><span class="logo-text"><strong>AYAKA</strong><span>SYNC API</span></span></a><p class="about">Secure, manage and monitor your API keys from one unified platform.</p></div>
+        <div><h4>Product</h4><ul><li><a href="index.html#features">Features</a></li><li><a href="docs.html">Documentation</a></li><li><a href="status.html">API Status</a></li></ul></div>
+        <div><h4>Developers</h4><ul><li><a href="docs.html#endpoints">Endpoint reference</a></li><li><a href="api/docs">OpenAPI reference</a></li><li><a href="docs.html#errors">Error codes</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="docs.html#support">Contact</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-year>2026</span> Ayaka Sync API. All rights reserved.</span><span>Built with FastAPI · PostgreSQL</span></div>
+    </div>
+  </footer>
+  <script type="module" src="assets/js/site.js"></script>
+</body>
+</html>

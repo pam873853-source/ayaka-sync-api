@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Documentation · Ayaka Sync API</title>
+  <meta name="description" content="Authenticate with API keys, call endpoints, handle rate limits and errors. cURL, Python and JavaScript examples.">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark light">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <header class="site-nav" id="site-nav">
+    <div class="container">
+      <a class="logo" href="index.html" aria-label="Ayaka Sync API home"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 12 4l8 11"/><path d="M8 20h8"/><path d="M8.5 15h7"/></svg></span><span class="logo-text"><strong>AYAKA</strong><span>SYNC API</span></span></a>
+      <nav class="site-links" aria-label="Primary"><a href="index.html">Home</a><a href="index.html#features">Features</a><a href="docs.html" class="is-active" aria-current="page">Documentation</a><a href="status.html">Status</a></nav>
+      <div class="site-cta" data-auth-cta>
+        <a class="btn btn-ghost btn-sm" href="login.html" data-guest>Sign In</a>
+        <a class="btn btn-primary btn-sm" href="register.html" data-guest>Get Started</a>
+        <a class="btn btn-primary btn-sm hidden" href="dashboard.html" data-member>Open Dashboard</a>
+      </div>
+      <button class="btn btn-ghost btn-icon theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme"><span data-icon="moon" class="icon-moon"></span><span data-icon="sun" class="icon-sun"></span></button>
+      <button class="btn btn-ghost btn-icon site-menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span data-icon="menu"></span></button>
+    </div>
+    <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
+      <a href="index.html">Home</a><a href="index.html#features">Features</a><a href="docs.html" class="is-active" aria-current="page">Documentation</a><a href="status.html">Status</a>
+      <a class="btn" href="login.html" data-guest>Sign In</a>
+      <a class="btn btn-primary" href="register.html" data-guest>Get Started</a>
+      <a class="btn btn-primary hidden" href="dashboard.html" data-member>Open Dashboard</a>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="docs-layout">
+      <nav class="docs-nav" id="docs-nav" aria-label="Documentation">
+        <span class="group">Getting started</span>
+        <a href="#introduction" class="is-active">Introduction</a>
+        <a href="#authentication">Authentication</a>
+        <a href="#api-keys">API Keys</a>
+        <span class="group">Reference</span>
+        <a href="#endpoints">Endpoints</a>
+        <a href="#usage">Usage</a>
+        <a href="#rate-limits">Rate Limits</a>
+        <a href="#errors">Errors</a>
+        <a href="#examples">Examples</a>
+        <span class="group">More</span>
+        <a href="#support">Help &amp; support</a>
+        <a href="api/docs" target="_blank" rel="noopener">OpenAPI reference ↗</a>
+      </nav>
+
+      <article class="docs-content">
+        <section id="introduction">
+          <span class="section-kicker">Documentation</span>
+          <h1 style="margin-top:10px">Ayaka Sync API</h1>
+          <p>Ayaka Sync API issues and manages REST API keys, enforces per-key permissions and rate limits, and records every request for analytics. All endpoints live under a single versioned base URL and return JSON.</p>
+          <div class="code"><div class="code-head"><span class="code-lang">Base URL</span><button class="btn btn-ghost btn-sm" data-copy-target="#base-url"><span data-icon="copy"></span><span>Copy</span></button></div><pre id="base-url"><span data-api-base>https://your-domain/api/v1</span></pre></div>
+          <p>Every response uses the same envelope:</p>
+          <div class="code"><div class="code-head"><span class="code-lang">json · success</span></div><pre>{
+  "success": true,
+  "message": "Request successful",
+  "data": {},
+  "meta": { "timestamp": "2026-01-01T00:00:00Z" }
+}</pre></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+            <a class="btn btn-sm" href="api/docs" target="_blank" rel="noopener"><span data-icon="external"></span>Open API Reference</a>
+            <a class="btn btn-sm" href="api/openapi.json" target="_blank" rel="noopener"><span data-icon="file"></span>openapi.json</a>
+          </div>
+        </section>
+
+        <section id="authentication">
+          <h2>Authentication</h2>
+          <p>Developer endpoints authenticate with an API key. Send it in the <code>Authorization</code> header using the Bearer scheme. The <code class="nw">X-API-Key</code> header is also accepted.</p>
+          <div class="code"><div class="code-head"><span class="code-lang">http</span></div><pre>Authorization: Bearer ayk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# or
+X-API-Key: ayk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</pre></div>
+          <ul>
+            <li>Keys are only accepted over headers — never put them in URLs or query strings.</li>
+            <li>Call the API from your server. Don't ship production keys in browser or mobile bundles.</li>
+            <li>The dashboard itself uses HttpOnly session cookies with CSRF protection; dashboard-only endpoints reject API keys.</li>
+          </ul>
+        </section>
+
+        <section id="api-keys">
+          <h2>API Keys</h2>
+          <p>Create keys in <a href="keys.html" style="text-decoration:underline">Dashboard → API Keys</a>. The full key is displayed once; only its HMAC-SHA256 hash is stored.</p>
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>Prefix</th><th>Environment</th><th>Use for</th></tr></thead>
+            <tbody>
+              <tr><td><code>ayk_test_</code></td><td>Development</td><td>Local development, staging, CI</td></tr>
+              <tr><td><code>ayk_live_</code></td><td>Production</td><td>Production traffic</td></tr>
+            </tbody></table></div>
+          <h3>Permissions</h3>
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>Permission</th><th>Grants</th></tr></thead>
+            <tbody>
+              <tr><td><code>read</code></td><td><code>GET /example</code>, <code>GET /records</code>, <code>GET /records/{id}</code></td></tr>
+              <tr><td><code>write</code></td><td><code>POST /records</code>, <code>PATCH /records/{id}</code></td></tr>
+              <tr><td><code>delete</code></td><td><code>DELETE /records/{id}</code></td></tr>
+              <tr><td><code>analytics</code></td><td><code>GET /analytics/*</code></td></tr>
+              <tr><td><code>profile</code></td><td><code>GET /profile</code></td></tr>
+              <tr><td><code>admin</code></td><td>Everything above plus <code>GET /keys</code>, <code>GET /keys/{id}</code>, <code>POST /keys/{id}/revoke</code>. Requires your password to grant.</td></tr>
+            </tbody></table></div>
+          <p>Optionally restrict a key to specific paths with <strong>allowed endpoints</strong>, e.g. <code>/api/v1/records/*</code>. Keys can also have an expiration date, a custom rate limit, and can be disabled, regenerated or revoked at any time.</p>
+        </section>
+
+        <section id="endpoints">
+          <h2>Endpoints</h2>
+          <p>Paths are relative to the base URL. <strong>Key</strong> = API key with the listed permission; <strong>Session</strong> = signed-in dashboard session.</p>
+          <h3>Developer API</h3>
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>Method</th><th>Path</th><th>Auth</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td class="method">GET</td><td><code>/example</code></td><td>Key · read</td><td>Verify a key and see its metadata</td></tr>
+              <tr><td class="method">GET</td><td><code>/records</code></td><td>Key · read</td><td>List JSON records (<code>?collection=&amp;page=&amp;per_page=</code>)</td></tr>
+              <tr><td class="method">POST</td><td><code>/records</code></td><td>Key · write</td><td>Create a record <code>{"collection","data"}</code></td></tr>
+              <tr><td class="method">GET</td><td><code>/records/{id}</code></td><td>Key · read</td><td>Fetch a record</td></tr>
+              <tr><td class="method">PATCH</td><td><code>/records/{id}</code></td><td>Key · write</td><td>Replace a record's <code>data</code></td></tr>
+              <tr><td class="method">DELETE</td><td><code>/records/{id}</code></td><td>Key · delete</td><td>Delete a record</td></tr>
+              <tr><td class="method">GET</td><td><code>/analytics/overview</code></td><td>Key · analytics / Session</td><td>Totals, success/error rate, latency, peak (<code>?range=24h|7d|30d|90d|custom&amp;start=&amp;end=&amp;api_key_id=</code>)</td></tr>
+              <tr><td class="method">GET</td><td><code>/analytics/requests</code></td><td>Key · analytics / Session</td><td>Time series and status-code breakdown</td></tr>
+              <tr><td class="method">GET</td><td><code>/analytics/endpoints</code></td><td>Key · analytics / Session</td><td>Top endpoints</td></tr>
+              <tr><td class="method">GET</td><td><code>/analytics/keys</code></td><td>Key · analytics / Session</td><td>Top API keys</td></tr>
+              <tr><td class="method">GET</td><td><code>/analytics/response-times</code></td><td>Key · analytics / Session</td><td>Average, max and p95 latency</td></tr>
+              <tr><td class="method">GET</td><td><code>/analytics/realtime</code></td><td>Key · analytics / Session</td><td>Per-minute traffic for the last hour</td></tr>
+              <tr><td class="method">GET</td><td><code>/profile</code></td><td>Key · profile / Session</td><td>Account profile</td></tr>
+              <tr><td class="method">GET</td><td><code>/keys</code>, <code>/keys/{id}</code></td><td>Key · admin / Session</td><td>List / inspect API keys (never returns secrets)</td></tr>
+              <tr><td class="method">POST</td><td><code>/keys/{id}/revoke</code></td><td>Key · admin / Session</td><td>Revoke a key</td></tr>
+              <tr><td class="method">GET</td><td><code>/health</code>, <code>/health/database</code></td><td>Public</td><td>Service and database health</td></tr>
+            </tbody></table></div>
+          <h3>Dashboard API <span class="muted" style="font-weight:400">(session + CSRF)</span></h3>
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>Method</th><th>Path</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td class="method">POST</td><td><code>/auth/register</code>, <code>/auth/login</code>, <code>/auth/logout</code>, <code>/auth/refresh</code></td><td>Account &amp; session lifecycle</td></tr>
+              <tr><td class="method">GET</td><td><code>/auth/me</code>, <code>/auth/sessions</code></td><td>Current user, active sessions</td></tr>
+              <tr><td class="method">POST</td><td><code>/auth/sessions/{id}/revoke</code>, <code>/auth/logout-all</code></td><td>Session management</td></tr>
+              <tr><td class="method">POST</td><td><code>/keys</code></td><td>Create a key (returns the secret once)</td></tr>
+              <tr><td class="method">PATCH</td><td><code>/keys/{id}</code></td><td>Rename, permissions, limits, expiry, enable/disable</td></tr>
+              <tr><td class="method">POST</td><td><code>/keys/{id}/regenerate</code></td><td>Issue a new secret</td></tr>
+              <tr><td class="method">DELETE</td><td><code>/keys/{id}</code></td><td>Delete a key</td></tr>
+              <tr><td class="method">GET</td><td><code>/dashboard/overview</code>, <code>/dashboard/recent-activity</code></td><td>Dashboard data</td></tr>
+              <tr><td class="method">GET</td><td><code>/activity</code>, <code>/activity/export</code></td><td>Audit log and CSV export</td></tr>
+              <tr><td class="method">PATCH</td><td><code>/profile</code>, <code>/settings</code></td><td>Update profile / preferences</td></tr>
+              <tr><td class="method">POST</td><td><code>/profile/change-password</code></td><td>Change password</td></tr>
+            </tbody></table></div>
+
+          <div class="try-panel" id="try">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+              <div><strong>Try an endpoint</strong><div class="hint">Read-only requests from your browser. Your key stays in memory on this page and is never stored.</div></div>
+              <select class="select select-sm" id="try-endpoint" style="width:auto" aria-label="Endpoint">
+                <option value="/health" data-auth="0">GET /health</option>
+                <option value="/health/database" data-auth="0">GET /health/database</option>
+                <option value="/example" data-auth="1" selected>GET /example</option>
+                <option value="/records" data-auth="1">GET /records</option>
+                <option value="/analytics/realtime" data-auth="1">GET /analytics/realtime</option>
+              </select>
+            </div>
+            <div class="field" id="try-key-field"><label class="label" for="try-key">API key</label><div class="input-group"><input class="input mono" id="try-key" type="password" placeholder="ayk_test_…" autocomplete="off" spellcheck="false" style="font-size:13px"><button type="button" class="btn btn-ghost btn-sm btn-icon input-addon" data-toggle-password="try-key" aria-label="Show key"><span data-icon="eye"></span></button></div></div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn btn-primary btn-sm" id="try-send"><span data-icon="play"></span>Send request</button><span class="hint" id="try-meta"></span></div>
+            <div class="code try-output hidden" id="try-output-wrap"><div class="code-head"><span class="code-lang" id="try-status">response</span><button class="btn btn-ghost btn-sm" data-copy-target="#try-output"><span data-icon="copy"></span><span>Copy</span></button></div><pre id="try-output"></pre></div>
+          </div>
+        </section>
+
+        <section id="usage">
+          <h2>Usage</h2>
+          <p>Every request authenticated with an API key — successful or not — is recorded with its request ID, endpoint, method, status code, response time, key, IP and user agent. Authorization headers, full keys, passwords and request bodies are never logged.</p>
+          <p>Usage powers the <a href="dashboard.html" style="text-decoration:underline">Overview</a> and <a href="analytics.html" style="text-decoration:underline">Analytics</a> pages. If the usage write fails, your request still succeeds; the event is retried in the background and the failure counter is exposed at <code>GET /health</code>.</p>
+          <p>Each response carries an <code>X-Request-ID</code> header you can search for in Recent API Activity.</p>
+        </section>
+
+        <section id="rate-limits">
+          <h2>Rate Limits</h2>
+          <p>Each key has its own limit (default <strong><span data-rate-default>60</span> requests per minute</strong>, configurable per key from 1 to 10,000). Counters are stored in PostgreSQL, so limits hold across serverless instances.</p>
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>Header</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>X-RateLimit-Limit</code></td><td>Requests allowed in the current window</td></tr>
+              <tr><td><code>X-RateLimit-Remaining</code></td><td>Requests left in the window</td></tr>
+              <tr><td><code>X-RateLimit-Reset</code></td><td>Unix timestamp when the window resets</td></tr>
+              <tr><td><code>Retry-After</code></td><td>Seconds to wait (only on <code>429</code>)</td></tr>
+            </tbody></table></div>
+          <div class="code"><div class="code-head"><span class="code-lang">json · 429</span></div><pre>{
+  "success": false,
+  "message": "Rate limit of 60 requests per minute exceeded",
+  "error": { "code": "RATE_LIMIT_EXCEEDED" },
+  "meta": { "timestamp": "2026-01-01T00:00:00Z", "request_id": "req_…" }
+}</pre></div>
+          <p>Sign-in is separately protected: repeated failed logins for an account or network are blocked for 15 minutes.</p>
+        </section>
+
+        <section id="errors">
+          <h2>Errors</h2>
+          <p>Errors use the envelope <code>{"success": false, "message", "error": {"code", "details?"}, "meta"}</code>. Branch on <code>error.code</code>, not on the message.</p>
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>HTTP</th><th>Code</th><th>When</th></tr></thead>
+            <tbody>
+              <tr><td>401</td><td><code>AUTHENTICATION_REQUIRED</code></td><td>No API key or session provided</td></tr>
+              <tr><td>401</td><td><code>INVALID_API_KEY</code></td><td>Key is malformed or unknown</td></tr>
+              <tr><td>401</td><td><code>API_KEY_EXPIRED</code></td><td>Key passed its expiration date</td></tr>
+              <tr><td>401</td><td><code>API_KEY_REVOKED</code></td><td>Key was revoked</td></tr>
+              <tr><td>403</td><td><code>API_KEY_DISABLED</code></td><td>Key is temporarily disabled</td></tr>
+              <tr><td>403</td><td><code>PERMISSION_DENIED</code></td><td>Key lacks the permission or endpoint is not allowed</td></tr>
+              <tr><td>404</td><td><code>RESOURCE_NOT_FOUND</code></td><td>Unknown endpoint or resource</td></tr>
+              <tr><td>422</td><td><code>VALIDATION_ERROR</code></td><td>Invalid input — see <code>error.details[]</code> (<code>field</code>, <code>message</code>)</td></tr>
+              <tr><td>429</td><td><code>RATE_LIMIT_EXCEEDED</code></td><td>Too many requests</td></tr>
+              <tr><td>500</td><td><code>INTERNAL_SERVER_ERROR</code></td><td>Unexpected server error (include <code>request_id</code> when reporting)</td></tr>
+              <tr><td>503</td><td><code>DATABASE_UNAVAILABLE</code> / <code>DATABASE_NOT_CONFIGURED</code></td><td>Database unreachable or <code>DATABASE_URL</code> missing</td></tr>
+            </tbody></table></div>
+        </section>
+
+        <section id="examples">
+          <h2>Examples</h2>
+          <p>Store your key in an environment variable (<code>AYAKA_API_KEY</code>) — never hard-code it.</p>
+          <h3>Verify a key</h3>
+          <div class="code" data-tabs>
+            <div class="code-head"><div class="code-tabs" role="tablist"><button class="is-active" data-tab="curl">cURL</button><button data-tab="python">Python</button><button data-tab="js">JavaScript</button></div><button class="btn btn-ghost btn-sm" data-copy-active><span data-icon="copy"></span><span>Copy code</span></button></div>
+<pre data-pane="curl">curl <span data-api-base>https://your-domain/api/v1</span>/example \
+  -H "Authorization: Bearer $AYAKA_API_KEY"</pre>
+<pre data-pane="python" class="hidden">import os
+import requests
+
+BASE_URL = "<span data-api-base>https://your-domain/api/v1</span>"
+headers = {"Authorization": f"Bearer {os.environ['AYAKA_API_KEY']}"}
+
+resp = requests.get(f"{BASE_URL}/example", headers=headers, timeout=10)
+body = resp.json()
+if not body["success"]:
+    raise RuntimeError(f"{body['error']['code']}: {body['message']}")
+print(body["data"]["key"])</pre>
+<pre data-pane="js" class="hidden">const BASE_URL = "<span data-api-base>https://your-domain/api/v1</span>";
+
+const res = await fetch(`${BASE_URL}/example`, {
+  headers: { Authorization: `Bearer ${process.env.AYAKA_API_KEY}` },
+});
+const body = await res.json();
+if (!body.success) throw new Error(`${body.error.code}: ${body.message}`);
+console.log(body.data.key, res.headers.get("X-RateLimit-Remaining"));</pre>
+          </div>
+
+          <h3>Create and list records</h3>
+          <div class="code" data-tabs>
+            <div class="code-head"><div class="code-tabs" role="tablist"><button class="is-active" data-tab="curl">cURL</button><button data-tab="python">Python</button><button data-tab="js">JavaScript</button></div><button class="btn btn-ghost btn-sm" data-copy-active><span data-icon="copy"></span><span>Copy code</span></button></div>
+<pre data-pane="curl">curl -X POST <span data-api-base>https://your-domain/api/v1</span>/records \
+  -H "Authorization: Bearer $AYAKA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"collection": "orders", "data": {"id": 1001, "total": 49.9}}'
+
+curl "<span data-api-base>https://your-domain/api/v1</span>/records?collection=orders" \
+  -H "Authorization: Bearer $AYAKA_API_KEY"</pre>
+<pre data-pane="python" class="hidden">import os
+import requests
+
+BASE_URL = "<span data-api-base>https://your-domain/api/v1</span>"
+s = requests.Session()
+s.headers["Authorization"] = f"Bearer {os.environ['AYAKA_API_KEY']}"
+
+created = s.post(f"{BASE_URL}/records", json={"collection": "orders", "data": {"id": 1001, "total": 49.9}}, timeout=10)
+created.raise_for_status()
+
+page = s.get(f"{BASE_URL}/records", params={"collection": "orders"}, timeout=10).json()
+for record in page["data"]:
+    print(record["id"], record["data"])</pre>
+<pre data-pane="js" class="hidden">const BASE_URL = "<span data-api-base>https://your-domain/api/v1</span>";
+const headers = {
+  Authorization: `Bearer ${process.env.AYAKA_API_KEY}`,
+  "Content-Type": "application/json",
+};
+
+await fetch(`${BASE_URL}/records`, {
+  method: "POST",
+  headers,
+  body: JSON.stringify({ collection: "orders", data: { id: 1001, total: 49.9 } }),
+});
+
+const list = await (await fetch(`${BASE_URL}/records?collection=orders`, { headers })).json();
+console.log(list.data, list.meta.total);</pre>
+          </div>
+
+          <h3>Handle rate limits</h3>
+          <div class="code"><div class="code-head"><span class="code-lang">python</span><button class="btn btn-ghost btn-sm" data-copy-target="#ex-retry"><span data-icon="copy"></span><span>Copy code</span></button></div><pre id="ex-retry">import time, requests
+
+def call(url, headers, attempts=3):
+    for _ in range(attempts):
+        r = requests.get(url, headers=headers, timeout=10)
+        if r.status_code != 429:
+            return r
+        time.sleep(int(r.headers.get("Retry-After", "1")))
+    return r</pre></div>
+        </section>
+
+        <section id="support">
+          <h2>Help &amp; support</h2>
+          <ul>
+            <li>Check <a href="status.html" style="text-decoration:underline">API Status</a> for service and database health.</li>
+            <li>Include the <code>request_id</code> from the error response (or the <code>X-Request-ID</code> header) when reporting a problem.</li>
+            <li>Self-hosting? The README covers Neon setup, environment variables, migrations and Vercel deployment.</li>
+            <li>Contact the operator of this deployment for account issues. No support mailbox is configured in this open-source build.</li>
+          </ul>
+        </section>
+      </article>
+    </div>
+  </div>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><a class="logo" href="index.html" aria-label="Ayaka Sync API home"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15 12 4l8 11"/><path d="M8 20h8"/><path d="M8.5 15h7"/></svg></span><span class="logo-text"><strong>AYAKA</strong><span>SYNC API</span></span></a><p class="about">Secure, manage and monitor your API keys from one unified platform.</p></div>
+        <div><h4>Product</h4><ul><li><a href="index.html#features">Features</a></li><li><a href="docs.html">Documentation</a></li><li><a href="status.html">API Status</a></li></ul></div>
+        <div><h4>Developers</h4><ul><li><a href="docs.html#endpoints">Endpoint reference</a></li><li><a href="api/docs">OpenAPI reference</a></li><li><a href="docs.html#errors">Error codes</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="docs.html#support">Contact</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-year>2026</span> Ayaka Sync API. All rights reserved.</span><span>Built with FastAPI · PostgreSQL</span></div>
+    </div>
+  </footer>
+  <script type="module" src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Overview · Ayaka Sync API</title>
+  <meta name="description" content="Overview — Ayaka Sync API dashboard">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark light">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/reveal.js" defer></script>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+</head>
+<body>
+  <a class="sr-only" href="#page">Skip to content</a>
+  <div class="app-loading" aria-hidden="true"><span class="spinner"></span></div>
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar"></aside>
+    <div class="drawer-scrim" aria-hidden="true"></div>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+      <main class="page" id="page" tabindex="-1">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">Overview</h1>
+            <p class="page-sub">Live summary of your API keys and the traffic they serve.</p>
+          </div>
+          <div class="page-actions">
+            <span class="updated-at"><span class="live-dot" id="live-dot"></span><span id="live-label">Live</span> · <span id="updated-at-text">Loading…</span></span>
+            <div class="segmented" id="range" role="group" aria-label="Time range">
+              <button type="button" data-range="24h">24h</button>
+              <button type="button" data-range="7d">7d</button>
+              <button type="button" data-range="30d" class="is-active">30d</button>
+              <button type="button" data-range="90d">90d</button>
+            </div>
+            <button class="btn btn-icon" id="refresh-btn" aria-label="Refresh" data-tooltip="Refresh now"><svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></button>
+          </div>
+        </div>
+
+        <div class="callout hidden" id="onboarding">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <div style="flex:1">
+            <strong style="color:var(--text)">Get started in two steps.</strong>
+            Create an API key, then call <code>GET /api/v1/example</code> with it. Every request is tracked and appears on this page.
+          </div>
+          <a class="btn btn-sm btn-primary" href="keys.html?new=1">Create API key</a>
+        </div>
+
+        <section class="stat-grid" id="stats" aria-label="Key metrics" aria-busy="true">
+          <article class="card stat" id="stat-total">
+            <div class="stat-top"><span class="stat-label">Total API Requests <span class="info" tabindex="0" data-tooltip="All requests authenticated with one of your API keys in the selected period."><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span></span><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg></span></div>
+            <div class="stat-value"><div class="skeleton sk-num"></div></div>
+            <div class="stat-foot"><div class="skeleton sk-line" style="width:70%"></div></div>
+          </article>
+          <article class="card stat" id="stat-keys">
+            <div class="stat-top"><span class="stat-label">Active API Keys <span class="info" tabindex="0" data-tooltip="Keys that are enabled, not revoked and not expired — out of all keys you own."><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span></span><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/></svg></span></div>
+            <div class="stat-value"><div class="skeleton sk-num"></div></div>
+            <div class="stat-foot"><div class="skeleton sk-line" style="width:70%"></div></div>
+          </article>
+          <article class="card stat" id="stat-success">
+            <div class="stat-top"><span class="stat-label">Successful Requests <span class="info" tabindex="0" data-tooltip="Requests answered with a status code below 400."><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span></span><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span></div>
+            <div class="stat-value"><div class="skeleton sk-num"></div></div>
+            <div class="stat-foot"><div class="skeleton sk-line" style="width:70%"></div></div>
+          </article>
+          <article class="card stat" id="stat-failed">
+            <div class="stat-top"><span class="stat-label">Failed Requests <span class="info" tabindex="0" data-tooltip="Requests answered with 4xx or 5xx, including invalid keys, permission errors and rate limiting."><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span></span><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span></div>
+            <div class="stat-value"><div class="skeleton sk-num"></div></div>
+            <div class="stat-foot"><div class="skeleton sk-line" style="width:70%"></div></div>
+          </article>
+        </section>
+
+        <section class="quick-actions" aria-label="Quick actions">
+          <a class="quick-action" href="keys.html?new=1"><span class="qa-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span><div><strong>Create API Key</strong><span>Generate a new secret</span></div><svg class="icon arrow" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></a>
+          <a class="quick-action" href="docs.html"><span class="qa-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span><div><strong>View Documentation</strong><span>Endpoints &amp; examples</span></div><svg class="icon arrow" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></a>
+          <a class="quick-action" href="analytics.html"><span class="qa-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span><div><strong>View Analytics</strong><span>Traffic &amp; latency</span></div><svg class="icon arrow" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></a>
+          <a class="quick-action" href="keys.html"><span class="qa-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span><div><strong>Manage API Keys</strong><span>Rotate, revoke, edit</span></div><svg class="icon arrow" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></a>
+        </section>
+
+        <section class="card" aria-labelledby="rt-title">
+          <div class="card-header">
+            <div><h2 class="card-title" id="rt-title">Real-time traffic</h2><p class="card-sub" id="rt-last">Last 60 minutes</p></div>
+            <div class="legend"><span><i style="background:var(--chart-secondary)"></i>Successful</span><span><i style="background:var(--error)"></i>Failed</span></div>
+          </div>
+          <div class="card-body">
+            <div class="chart-box sm" id="rt-chart-box">
+              <canvas aria-label="Requests per minute over the last hour" role="img"></canvas>
+              <div class="chart-overlay hidden" id="rt-empty"><div class="empty" style="padding:0"><h3>No traffic in the last hour</h3><p>Requests appear here within seconds of being made.</p></div></div>
+            </div>
+          </div>
+          <div class="live-strip">
+            <div><div class="k">Requests / min (5m avg)</div><div class="v" id="rt-rpm">—</div></div>
+            <div><div class="k">Last hour</div><div class="v" id="rt-hour">—</div></div>
+            <div><div class="k">Success rate (1h)</div><div class="v" id="rt-success">—</div></div>
+            <div><div class="k">Avg response (1h)</div><div class="v" id="rt-latency">—</div></div>
+          </div>
+        </section>
+
+        <section class="card" id="activity-card" aria-labelledby="act-title">
+          <div class="card-header">
+            <div><h2 class="card-title" id="act-title">Recent API Activity</h2><p class="card-sub">Every request made with your API keys</p></div>
+            <div class="toolbar">
+              <label class="input-icon"><span class="sr-only">Search requests</span><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="input input-sm" id="act-search" type="search" placeholder="Search endpoint, key, request ID"></label>
+              <select class="select select-sm" id="act-method" aria-label="Filter by method"><option value="">All methods</option><option>GET</option><option>POST</option><option>PATCH</option><option>PUT</option><option>DELETE</option></select>
+              <select class="select select-sm" id="act-status" aria-label="Filter by status"><option value="">All statuses</option><option value="success">Successful</option><option value="error">Failed</option><option value="2xx">2xx</option><option value="4xx">4xx</option><option value="5xx">5xx</option></select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="table stack">
+              <thead><tr><th>Request ID</th><th>API key</th><th>Endpoint</th><th>Method</th><th>Status</th><th>Response</th><th>Timestamp</th></tr></thead>
+              <tbody id="activity-body"></tbody>
+            </table>
+          </div>
+          <div class="card-footer" id="activity-pagination"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="assets/js/dashboard.js"></script>
+</body>
+</html>
